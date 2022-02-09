@@ -12,12 +12,14 @@ class CSVImporter():
         self.csv_lines = []
 
     def import_csv(self):
+        print("importing CSV")
         with open(self.file_name, 'r', encoding='utf-8-sig') as list_file:
             csv_file = csv.reader(list_file)
             for line in csv_file:
                 self.csv_lines.append(line)
 
     def check_csv(self):
+        print("checking csv")
         col_1, col_2, col_3, col_4 = self.csv_lines[0]
         if col_1.strip() not in self.col_1_names:
             self.csv_lines = []

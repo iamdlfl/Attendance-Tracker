@@ -7,6 +7,7 @@ class DirectorySearch():
         self.file_names = []
 
     def search(self):
+        print("doing search")
         self.set_csv_file_names()
         return self.get_file_names()
 

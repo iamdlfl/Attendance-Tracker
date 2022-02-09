@@ -1,9 +1,11 @@
 from .CSVI.CSVImporter import CSVImporter #type: ignore
 from .DirectoryFuncs.DirectorySearch import DirectorySearch #type: ignore
+from .Writer.TXTWriter import TXTWriter #type: ignore
 
 class CountDictionary():
 
     def __init__(self, top_contacts):
+        print("init")
         self.dictionary = {}
         self.sorted_contact_list = []
         self.number_of_top_contacts = top_contacts
@@ -23,7 +25,7 @@ class CountDictionary():
         """Uses add_contact() to add all people from current csv lines - based on their email currently. 
         This method adds the contents of self.csv_lines to self.processed lines once complete.
         This method then erases csv_lines (to prevent duplication if future CSVs are added)."""
-
+        
         if not len(self.csv_lines):
             raise Exception('You have not processed a csv file yet, or it was empty. Please use the process_csv method first to add in a csv file.')
         for contact in self.csv_lines:
@@ -32,16 +34,20 @@ class CountDictionary():
             except:
                 raise Exception(f'There was a problem processing {contact}, which is located in line {self.csv_lines.index(contact)+1} of ' +
                 'self.csv_lines. Please ensure that each contact has 4 pieces of data: Full name, first, last, email')
+        print("adding contacts")
         self.processed_lines.append(self.csv_lines)
         self.csv_lines = []
 
     def count(self):
+        print('getting count')
+        self.set_file_names()
         for name in self.file_names:
             if not self.process_csv(name):
                 print(f'Cancelling count() operation, will return results so far. Stopped at {name}')
                 break
             self.add_contact_list()
             self.process_top_contacts()
+        print('returning top contacts')
         return self.get_top_contacts()
 
     def get_dictionary(self):
@@ -77,7 +83,11 @@ class CountDictionary():
     def set_file_names(self):
         DirSearch = DirectorySearch()
         self.file_names = DirSearch.search()
-    
+
+    def write_results(self):
+
+        txt = TXTWriter(self.count())
+        txt.write()    
 
 if __name__ == "__main__":
     pass
