@@ -16,7 +16,7 @@ class DirectorySearch():
         self.set_dir()
         for item in os.listdir(self.dir):
             item_name = os.path.join(self.dir, item)
-            if os.path.isfile(item_name) and (item_name[-4:] == '.csv'):
+            if os.path.isfile(item_name):
                 self.file_names.append(item_name)
 
     def set_dir(self):

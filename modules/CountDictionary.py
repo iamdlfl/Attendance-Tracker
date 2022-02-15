@@ -29,7 +29,7 @@ class CountDictionary():
         This method then erases csv_lines (to prevent duplication if future CSVs are added)."""
         
         if not len(self.csv_lines):
-            raise Exception('You have not processed a csv file yet, or it was empty. Please use the process_csv method first to add in a csv file.')
+            print('You have not processed a csv file yet, or it was empty. Please use the process_csv method first to add in a csv file.')
         for contact in self.csv_lines:
             try:
                 self.add_contact(contact[3], contact[0])
@@ -48,13 +48,13 @@ class CountDictionary():
             # Branch Excel or CSV
             if name[-4:] == 'xlsx':
                 if not self.process_excel(name):
-                    print(f'Cancelling count() operation, will return results so far. Stopped at {name}')
-                    break
+                    print(f'Error with count() operation, will continue to gather results results so far. Issue at {name}')
             elif name[-3:] == 'csv':
                 if not self.process_csv(name):
-                    print(f'Cancelling count() operation, will return results so far. Stopped at {name}')
-                    break
+                    print(f'Error with count() operation, will continue to gather results results so far. Issue at {name}')
+                    
             # Process top contacts for list
+            print(name)
             self.add_contact_list()
             
         self.process_top_contacts()
@@ -81,7 +81,7 @@ class CountDictionary():
         ImportedCSV.import_csv()
         ImportedCSV.check_csv()
         if not len(ImportedCSV.csv_lines):
-            raise Exception('There was an issue importing the CSV.')
+            print('There was an issue importing the CSV.')
     
         self.csv_lines = ImportedCSV.csv_lines[:]
 
@@ -96,12 +96,11 @@ class CountDictionary():
     def process_excel(self, file_name):
         """Uses ExcelImporter to process Excel files"""
         ImportedExcel = ExcelImporter(file_name)
-        ImportedExcel.import_excel()
-        ImportedExcel.check_excel()
+        ImportedExcel.process_excel()
         if not len(ImportedExcel.excel_rows):
-            raise Exception('There was an issue importing the CSV.')
+            raise Exception('There was an issue importing the Excel file.')
     
-        self.csv_lines = ImportedExcel.excel_rows[:]
+        self.csv_lines = ImportedExcel.results[:]
 
         for processed in self.processed_lines:
             if self.csv_lines == processed:
