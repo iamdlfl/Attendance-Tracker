@@ -1,8 +1,10 @@
+import string
 from .OSModules.Importing.CSVImporter import CSVImporter #type: ignore
 from .OSModules.Importing.ExcelImporter import ExcelImporter #type: ignore
 from .OSModules.DirectorySearch import DirectorySearch #type: ignore
-from .OSModules.Writer.TXTWriter import TXTWriter #type: ignore
+from .OSModules.Writer.Writers import TXTWriter, CSVWriter #type: ignore
 from .Person.Person import Person #type: ignore
+import math
 
 class CountDictionary():
 
@@ -18,6 +20,9 @@ class CountDictionary():
     
     def add_contact(self, contact, name):
         """Processes each contact and keeps track of how many times they have appeared in the list so far."""
+        if type(contact) is not str: 
+            print(f"no email found, skipping contact {name}")
+            return
         if contact not in self.people:
             self.people[contact] = Person(name, contact)
         else:
@@ -114,6 +119,10 @@ class CountDictionary():
         if name: DirSearch = DirectorySearch(name)
         else: DirSearch = DirectorySearch()
         self.file_names = DirSearch.search()
+
+    def write_csv(self):
+        csv = CSVWriter(self.count())
+        csv.write()
 
     def write_results(self):
         txt = TXTWriter(self.count())
