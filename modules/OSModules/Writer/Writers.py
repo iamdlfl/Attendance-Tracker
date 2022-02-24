@@ -31,7 +31,7 @@ class CSVWriter():
             my_writer.writerows(self.results)
 
 def splitter(splittee):
-    items = splittee.split('-')
+    items = splittee.split('|')
     results = []
     for item in items:
         results.append(item.strip())

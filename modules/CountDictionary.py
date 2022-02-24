@@ -77,7 +77,7 @@ class CountDictionary():
         dictionary_copy = self.people.copy()
         
         #uses the Person model to keep track of the name, email and count
-        self.sorted_contact_list = [f'{v.name} - {v.email} - {v.count}' for k, v in sorted(dictionary_copy.items(), reverse=True, key=lambda item: item[1].count)]
+        self.sorted_contact_list = [f'{v.name} | {v.email} | {v.count}' for k, v in sorted(dictionary_copy.items(), reverse=True, key=lambda item: item[1].count)]
         self.top_contacts = self.sorted_contact_list[:self.number_of_top_contacts]
 
     def process_csv(self, file_name):
